@@ -20,15 +20,14 @@ int WaitingVehicles::getSize()
 
 void WaitingVehicles::pushBack(std::shared_ptr<Vehicle> vehicle, std::promise<void> &&promise)
 {
-    _mutex.lock();
+    std::lock_guard<std::mutex> lck(_mutex);
     _vehicles.push_back(vehicle);
     _promises.push_back(std::move(promise));
-    _mutex.unlock();
 }
 
 void WaitingVehicles::permitEntryToFirstInQueue()
 {
-    _mutex.lock();
+    std::lock_guard<std::mutex> lck(_mutex);
     // get entries from the front of both queues
     auto firstPromise = _promises.begin();
     auto firstVehicle = _vehicles.begin();
@@ -39,7 +38,6 @@ void WaitingVehicles::permitEntryToFirstInQueue()
     // remove front elements from both queues
     _vehicles.erase(firstVehicle);
     _promises.erase(firstPromise);
-    _mutex.unlock();
 }
 
 /* Implementation of class "Intersection" */
