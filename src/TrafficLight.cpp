@@ -42,14 +42,52 @@ TrafficLightPhase TrafficLight::getCurrentPhase()
 
 void TrafficLight::simulate()
 {
-    // FP.2b : Finally, the private method „cycleThroughPhases“ should be started in a thread when the public method „simulate“ is called. To do this, use the thread queue in the base class.
+    // FP.2b : Finally, the private method „cycleThroughPhases“ should be
+    // started in a thread when the public method „simulate“ is called. To do
+    // this, use the thread queue in the base class.
 }
 
 // virtual function which is executed in a thread
 void TrafficLight::cycleThroughPhases()
 {
-    // FP.2a : Implement the function with an infinite loop that measures the time between two loop cycles
-    // and toggles the current phase of the traffic light between red and green and sends an update method
-    // to the message queue using move semantics. The cycle duration should be a random value between 4 and 6 seconds.
-    // Also, the while-loop should use std::this_thread::sleep_for to wait 1ms between two cycles.
+  // FP.2a : Implement the function with an infinite loop that measures the
+  // time between two loop cycles and toggles the current phase of the traffic
+  // light between red and green and sends an update method to the message
+  // queue using move semantics. The cycle duration should be a random value
+  // between 4 and 6 seconds. Also, the while-loop should use
+  // std::this_thread::sleep_for to wait 1ms between two cycles.
+
+  std::random_device rd; // non-determistic seed generator
+  std::mt19937 gen(rd()); // Mersenne Twister pseudo-random number generator
+
+  // Construct uniform probability density function for integers in [a, b].
+  // uniform_int_distribution<T=int>::uniform_int_distribution(T a, T b)
+  std::uniform_int_distribution<> dis(4000, 6000);
+
+  // Generate a random int in [4000, 6000] with Mersenne Twister.
+  double cycleDuration = dis(gen); // Let units of cycleDuration be milliseconds.
+
+  // Define local refernce time variable and initialize.
+  std::chrono::time_point<std::chrono::system_clock> lastUpdate;
+  lastUpdate = std::chrono::system_clock::now();
+
+  while (true) {
+    // Sleep at every iteration to reduce CPU usage.
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
+    // Compute time difference since last local reference time.
+    long timeSinceLastUpdate = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - lastUpdate).count();
+    if (timeSinceLastUpdate >= cycleDuration) {
+      if(_currentPhase == TrafficLightPhase::red)
+        _currentPhase = TrafficLightPhase::green;
+      else
+        _currentPhase = TrafficLightPhase::red;
+
+      // Send update message to the message queue.
+      // _messageQueue.send(); // Uncomment after FP.3
+
+      // Reset stop watch for next cycle.
+      lastUpdate = std::chrono::system_clock::now();
+    }
+  }
 }
