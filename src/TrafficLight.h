@@ -18,15 +18,15 @@ enum class TrafficLightPhase {red, green};
 // Also, there should be an std::condition_variable as well as an std::mutex as
 // private members.
 
-// template <class T=TrafficLightPhase>
+template <class T=TrafficLightPhase>
 class MessageQueue
 {
 public:
-  void send(TrafficLightPhase&&);
-  TrafficLightPhase receive();
+  void send(T&&);
+  T receive();
 
 private:
-  std::deque<TrafficLightPhase> _queue;
+  std::deque<T> _queue;
   std::condition_variable _cond;
   std::mutex _mutex;
 };
@@ -60,7 +60,6 @@ private:
     // type TrafficLightPhase and use it within the infinite loop to push each
     // new TrafficLightPhase into it by calling send in conjunction with move
     // semantics.
-
     TrafficLightPhase _currentPhase;
     std::condition_variable _condition;
     std::mutex _mutex;
