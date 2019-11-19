@@ -60,7 +60,7 @@ private:
     // type TrafficLightPhase and use it within the infinite loop to push each
     // new TrafficLightPhase into it by calling send in conjunction with move
     // semantics.
-    MessageQueue<TrafficLightPhase> _messageQueue;
+    std::shared_ptr<MessageQueue<TrafficLightPhase>> _messageQueue{new MessageQueue<TrafficLightPhase>};
     TrafficLightPhase _currentPhase;
     std::condition_variable _condition;
     std::mutex _mutex;

@@ -33,7 +33,6 @@ void MessageQueue<T>::send(T &&msg)
 }
 
 /* Implementation of class "TrafficLight" */
-
 TrafficLight::TrafficLight()
 {
     _currentPhase = TrafficLightPhase::red;
@@ -41,9 +40,15 @@ TrafficLight::TrafficLight()
 
 void TrafficLight::waitForGreen()
 {
-    // FP.5b : add the implementation of the method waitForGreen, in which an infinite while-loop
-    // runs and repeatedly calls the receive function on the message queue.
-    // Once it receives TrafficLightPhase::green, the method returns.
+    // FP.5b : add the implementation of the method waitForGreen, in which an
+    // infinite while-loop runs and repeatedly calls the receive function on
+    // the message queue. Once it receives TrafficLightPhase::green, the method
+    // returns.
+    while(true){
+      if( _messageQueue->receive() == TrafficLightPhase::green )
+        return;
+    }
+
 }
 
 TrafficLightPhase TrafficLight::getCurrentPhase()
@@ -96,7 +101,7 @@ void TrafficLight::cycleThroughPhases()
         _currentPhase = TrafficLightPhase::red;
 
       // Send update message to the message queue.
-      _messageQueue.send(std::move(_currentPhase));
+      _messageQueue->send(std::move(_currentPhase));
 
       // Reset stop watch for next cycle.
       lastUpdate = std::chrono::system_clock::now();
