@@ -85,7 +85,7 @@ void TrafficLight::cycleThroughPhases()
         _currentPhase = TrafficLightPhase::red;
 
       // Send update message to the message queue.
-      // _messageQueue.send(); // Uncomment after FP.3
+      // _messageQueue.send(); // Uncomment after it is implemented.
 
       // Reset stop watch for next cycle.
       lastUpdate = std::chrono::system_clock::now();
