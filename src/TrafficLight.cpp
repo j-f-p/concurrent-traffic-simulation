@@ -15,7 +15,7 @@ T MessageQueue<T>::receive()
     _cond.wait( unqlck, [this] {return !_queue.empty();} );
 
     T msg = std::move(_queue.back());
-    _queue.pop_back();
+    _queue.clear();
 
     return msg;
 }
@@ -74,6 +74,7 @@ void TrafficLight::cycleThroughPhases()
   // queue using move semantics. The cycle duration should be a random value
   // between 4 and 6 seconds. Also, the while-loop should use
   // std::this_thread::sleep_for to wait 1ms between two cycles.
+  _messageQueue.send(std::move(_currentPhase));
 
   std::random_device rd; // non-determistic seed generator
   std::mt19937 gen(rd()); // Mersenne Twister pseudo-random number generator
@@ -95,7 +96,7 @@ void TrafficLight::cycleThroughPhases()
 
     // Compute time difference since last local reference time.
     long timeSinceLastUpdate = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - lastUpdate).count();
-    if (timeSinceLastUpdate >= cycleDuration) {
+    if (timeSinceLastUpdate > cycleDuration) {
       if(_currentPhase == TrafficLightPhase::red)
         _currentPhase = TrafficLightPhase::green;
       else
