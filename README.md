@@ -4,7 +4,7 @@ Objective: This is a completion of the concurrent traffic simulation project of 
 ## Description
 This project is a traffic simulation that employs a graph model. Underlying an aerial view of a small section of a city, is a graph representing select streets and intersections. The edges of the graph are straight lines that represent the streets. The graph vertices represent the intersections. Vertices attached to only one line are "intersections" where vehicles make a U-turn. Vehicles are modeled by points that move on the graph. Each vehicle point is represented by a disc with that point at its center. Each intersection determines when a vehicle is allowed to cross that intersection according to each vehicle's order of arrival. Only one vehicle is allowed in an intersection zone at one time. An intersection zone, is a region of the graph that includes an intersection and 10% of the length of any street connected to that intersection. At each intersection, there is a traffic light, represented by a disc, smaller than a vehicle disc, with a color that is either green or red, the color having the usual meaning of indicating whether or not any vehicle can cross the associated intersection. Each traffic light changes its color after a randomly selected time period of between 4 and 6 seconds inclusive. The project execution employs a separate thread to concurrently process each vehicle, intersection and traffic light.
 
-![Concurrent Traffic Simulation](data/screenshot.png)<br>
+![Concurrent Traffic Simulation](data/screenshot.jpg)<br>
 *Sample Execution Screenshot*
 
 ## Environment
