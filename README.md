@@ -7,8 +7,8 @@ This project is a traffic simulation that employs a graph model. Underlying an a
 ![Concurrent Traffic Simulation](data/screenshot.jpg)<br>
 *Sample Execution Screenshot*
 
-## Environment
-This project was completed on Bento/Ubuntu 19.04 with the following packages installed via package manager:
+## Initial Environment
+This project was initially completed on Bento/Ubuntu 19.04 with the following packages installed via package manager:
 ```
   build-essential
   cmake
@@ -17,17 +17,38 @@ This project was completed on Bento/Ubuntu 19.04 with the following packages ins
   libavformat-dev
   libswscale-dev
 ```
-and the following package installed manually: [opencv](https://github.com/opencv/opencv.git), which contains various C++ libraries. Those employed by this project are refernced by the headers `<opencv2/core.hpp>`, `<opencv2/imgproc.hpp>` and `<opencv2/highgui.hpp>`. The build-essential package included the GCC 8.3.0 (Ubuntu 8.3.0-6ubuntu1) compiler employed to compile the C++ code.
+and the following package installed manually: [opencv](https://github.com/opencv/opencv.git), which contains various C++ libraries. The last four packages listed above where particular to installing opencv manually. The opencv C++ libraries employed by this project are refernced by the headers `<opencv2/core.hpp>`, `<opencv2/imgproc.hpp>` and `<opencv2/highgui.hpp>`. The build-essential package included the GCC 8 compiler employed to compile the C++ code.
+
+## Latest Environment
+The project was migrated to a virtual machine having the Bento/Ubuntu 20.04 Linux distribution with the following packages installed via the APT package manager:
+```
+  gcc-10
+  g++-10
+  clang
+  cmake
+  libopencv-dev
+```
+The opencv C++ library headers are `<opencv2/core.hpp>`, `<opencv2/imgproc.hpp>` and `<opencv2/highgui.hpp>`. The project can be compiled according to the C++ 2020 standard, either with GCC 10 or LLVM 10 Clang.
 
 ## Execution
 
-In a bash shell, the project can be compiled by the following sequence of commands.
-```bash
+Given the latest environment above, in Bash, the project can be compiled by the following sequence of commands. Create the build directory.
+```ShellSession
   mkdir build && cd build
-  cmake ..
+```
+Execute CMake. For the GCC 10 compiler, the command is:
+```ShellSession
+  cmake -D CMAKE_C_COMPILER=gcc-10 -D CMAKE_CXX_COMPILER=g++-10 ..
+```
+Alternatively, for the Clang 10 compiler, the command is:
+```ShellSession
+  cmake -D CMAKE_C_COMPILER=clang -D CMAKE_CXX_COMPILER=clang++ ..
+```
+Execute the generated Makefile.
+```ShellSession
   make
 ```
-The executable will be placed in the `build` directory. From within `build`, the project can then be run by entering:
-```bash
+The executable will be placed in the `build` directory. From within `build`, the project can then be run by executing the project executable:
+```ShellSession
   ./traffic_simulation
 ```
